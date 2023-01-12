@@ -2,46 +2,18 @@ name: Lint, Test & Deploy
 on:
   push
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get code
-        uses: actions/checkout@v3
-      - name: Install NodeJS
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-      - name: Install dependencies
-        run: npm ci
-      - name: Run lint
-        run: npm run lint
-  test:
-    needs: lint
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get code
-        uses: actions/checkout@v3
-      - name: Install NodeJS
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-      - name: Install dependencies
-        run: npm ci
-      - name: Run tests
-        run: npm test
   deploy:
-    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Get code
         uses: actions/checkout@v3
-      - name: Install NodeJS
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
       - name: Install dependencies
         run: npm ci
-      - name: Build project
+      - name: Lint
+        run: npm run lint
+      - name: Test
+        run: npm run test
+      - name: Build code
         run: npm run build
-      - name: Deploy
-        run: echo "Deploying ..."
+      - name: Deploy code
+        run: echo "Deploying"
